@@ -1,0 +1,16 @@
+{
+  "name": "Calendar Event Power-Up",
+  "description": "Generate downloadable calendar event (.ics) from card title.",
+  "id": "calendar-event-powerup",
+  "author": "Your Name",
+  "icon": {
+    "url": "icon.png",
+    "title": "Calendar Event Power-Up icon"
+  },
+  "capabilities": {
+    "card-buttons": {
+      "url": "index.html",
+      "height": 110
+    }
+  }
+}
