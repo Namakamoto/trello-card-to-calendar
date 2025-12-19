@@ -1,16 +1,18 @@
 {
-  "name": "Calendar Event Power-Up",
-  "description": "Generate downloadable calendar event (.ics) from card title.",
-  "id": "calendar-event-powerup",
-  "author": "Your Name",
+  "name": "Card-to-Calendar",
+  "description": "Generate calendar event (.ics) from card title.",
+  "id": "card-to-calendar",
+  "author": "Nico Faderbauer",
   "icon": {
-    "url": "icon.png",
-    "title": "Calendar Event Power-Up icon"
+    "url": "https://cdn-icons-png.flaticon.com/512/747/747310.png",
+    "title": "Card-to-Calendar icon"
   },
-  "capabilities": {
-    "card-buttons": {
-      "url": "index.html",
-      "height": 110
+  "capabilities": [
+    "card-buttons"
+  ],
+  "connectors": {
+    "iframe": {
+      "url": "connector.js"
     }
   }
 }

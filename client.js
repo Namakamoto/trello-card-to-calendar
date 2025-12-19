@@ -158,13 +158,11 @@
     return lines.join('\r\n');
   }
 
-  // Check if we're in an iframe context or main initialization
-  if (window.location.search.indexOf('iframe') !== -1 || document.getElementById('event-info')) {
-    // We're in the iframe showing event details
-    var t = window.TrelloPowerUp.iframe();
+  // Entry point for the card-button iframe
+  var t = window.TrelloPowerUp.iframe();
 
-    function buildPage() {
-      return t.card('name').then(function(card) {
+  function buildPage() {
+    return t.card('name').then(function(card) {
       var container = document.getElementById('event-info');
       try {
         var parsed = parseCardText(card.name);
@@ -216,27 +214,9 @@
     });
   }
 
-    // Initialize immediately to avoid timeout
-    t.render(function(){
-      return buildPage();
-    });
-  } else {
-    // We're in the main context - register the Power-Up capabilities
-    window.TrelloPowerUp.initialize({
-      'card-buttons': function(t, options) {
-        return [{
-          icon: '📅',
-          text: 'Calendar Event',
-          callback: function(t) {
-            return t.popup({
-              title: 'Calendar Event',
-              url: './index.html?iframe=true',
-              height: 200
-            });
-          }
-        }];
-      }
-    });
-  }
+  // Initialize immediately to avoid timeout
+  t.render(function(){
+    return buildPage();
+  });
 
 })();
