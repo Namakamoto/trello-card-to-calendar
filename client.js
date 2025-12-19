@@ -158,20 +158,22 @@
     return lines.join('\r\n');
   }
 
-  // Entry point for the card-button iframe: fetch card details, parse, and insert link into DOM.
-  var t = window.TrelloPowerUp.iframe();
+  // Check if we're in an iframe context or main initialization
+  if (window.location.search.indexOf('iframe') !== -1 || document.getElementById('event-info')) {
+    // We're in the iframe showing event details
+    var t = window.TrelloPowerUp.iframe();
 
-  function buildPage() {
-    t.card('name').then(function(card) {
+    function buildPage() {
+      return t.card('name').then(function(card) {
       var container = document.getElementById('event-info');
       try {
         var parsed = parseCardText(card.name);
         var ics = generateICS(parsed);
-        // Create blob and download link
-        var blob = new Blob([ics], { type: 'text/calendar;charset=utf-8' });
-        var url = URL.createObjectURL(blob);
+        
+        // Create download link with data URI instead of blob to avoid CORS issues
+        var dataUri = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(ics);
         var link = document.createElement('a');
-        link.href = url;
+        link.href = dataUri;
         link.download = (parsed.title || 'event') + '.ics';
         link.textContent = '\uD83D\uDCC5 Download Event (.ics)';
         link.style.display = 'inline-block';
@@ -181,6 +183,8 @@
         link.style.color = '#fff';
         link.style.borderRadius = '4px';
         link.style.textDecoration = 'none';
+        link.style.cursor = 'pointer';
+        
         // Clear and insert
         container.innerHTML = '';
         var summary = document.createElement('div');
@@ -202,17 +206,37 @@
           container.appendChild(guests);
         }
         container.appendChild(link);
+        
+        // Resize iframe after content is added
+        return t.sizeTo('#container');
       } catch (e) {
         container.innerHTML = '<div style="color:red">Error parsing card: ' + e.message + '</div>';
+        return t.sizeTo('#container');
       }
     });
   }
 
-  // Render event on load
-  t.render(function(){
-    buildPage();
-    // adjust height if needed after DOM update
-    t.sizeTo('#container').done();
-  });
+    // Initialize immediately to avoid timeout
+    t.render(function(){
+      return buildPage();
+    });
+  } else {
+    // We're in the main context - register the Power-Up capabilities
+    window.TrelloPowerUp.initialize({
+      'card-buttons': function(t, options) {
+        return [{
+          icon: '📅',
+          text: 'Calendar Event',
+          callback: function(t) {
+            return t.popup({
+              title: 'Calendar Event',
+              url: './index.html?iframe=true',
+              height: 200
+            });
+          }
+        }];
+      }
+    });
+  }
 
 })();
