@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://p.trellocdn.com/power-up.min.css">
+    <style>
+      .result { margin-top: 15px; padding: 10px; background: #f4f5f7; border-radius: 3px; }
+      .error { color: #eb5a46; }
+      .success { color: #61bd4f; }
+      button { margin-top: 10px; }
+    </style>
+    <script src="https://p.trellocdn.com/power-up.min.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <p><strong>Card Title:</strong> <span id="cardTitle">Loading...</span></p>
+      <button id="generateBtn" class="mod-primary">Generate & Download ICS</button>
+      <div id="result" class="result" style="display:none;"></div>
+    </div>
+    <script src="./js/dateFunctions.js"></script>
+    <script src="./js/estimate.js"></script>
+  </body>
+</html>
