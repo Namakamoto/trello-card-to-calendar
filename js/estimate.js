@@ -42,6 +42,8 @@ t.render(function(){
   .then(function(card){
     cardTitle = card.name;
     document.getElementById('cardTitle').textContent = cardTitle;
+    document.getElementById('cardDescription').textContent = card.description || 'No description available.';
+	console.warn(card);
   })
   .then(function(){
     t.sizeTo('#app');
