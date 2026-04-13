@@ -38,11 +38,11 @@ document.getElementById('generateBtn').addEventListener('click', function() {
 
 // Load and display card title
 t.render(function(){
-  return t.card('name')
+  return t.card('name', 'desc')
   .then(function(card){
     cardTitle = card.name;
     document.getElementById('cardTitle').textContent = cardTitle;
-    document.getElementById('cardDescription').textContent = card.description || 'No description available.';
+    document.getElementById('cardDescription').textContent = card.desc || 'No description available.';
 	console.warn(card);
   })
   .then(function(){
