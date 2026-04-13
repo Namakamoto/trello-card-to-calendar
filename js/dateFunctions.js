@@ -127,7 +127,7 @@
   }
 
   // Generate iCalendar content for the event
-  function generateICS(parsed) {
+  function generateICS(parsed, description) {
     var uid = 'id-' + Math.random().toString(36).substr(2, 9) + '@trello-powerup';
     var now = new Date();
     var dtStamp = formatDateTime(now);
@@ -156,8 +156,15 @@
       lines.push('DTEND;VALUE=DATE:' + endDay);
     }
     lines.push('SUMMARY:' + escapeICS(parsed.title));
+    var descParts = [];
+    if (description) {
+      descParts.push(description);
+    }
     if (parsed.pax) {
-      lines.push('DESCRIPTION:' + escapeICS('Guests: ' + parsed.pax + ' pax'));
+      descParts.push('Guests: ' + parsed.pax + ' pax');
+    }
+    if (descParts.length > 0) {
+      lines.push('DESCRIPTION:' + escapeICS(descParts.join('\n\n')));
     }
     lines.push('END:VEVENT');
     lines.push('END:VCALENDAR');

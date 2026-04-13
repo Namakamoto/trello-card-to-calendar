@@ -3,6 +3,7 @@
 var t = TrelloPowerUp.iframe();
 
 var cardTitle = '';
+var cardDescription = '';
 
 // Download ICS file
 function downloadICS(icsContent, filename) {
@@ -27,7 +28,7 @@ function showResult(message, isError) {
 document.getElementById('generateBtn').addEventListener('click', function() {
   try {
     var parsed = parseCardText(cardTitle);
-    var icsContent = generateICS(parsed);
+    var icsContent = generateICS(parsed, cardDescription);
     var filename = (parsed.title || 'event').replace(/[^a-z0-9]/gi, '_').toLowerCase() + '.ics';
     downloadICS(icsContent, filename);
     showResult('✓ ICS file downloaded successfully!', false);
@@ -41,8 +42,9 @@ t.render(function(){
   return t.card('name', 'desc')
   .then(function(card){
     cardTitle = card.name;
+    cardDescription = card.desc || '';
     document.getElementById('cardTitle').textContent = cardTitle;
-    document.getElementById('cardDescription').textContent = card.desc || 'No description available.';
+    document.getElementById('cardDescription').textContent = cardDescription || 'No description available.';
 	console.warn(card);
   })
   .then(function(){
