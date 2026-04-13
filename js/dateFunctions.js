@@ -62,11 +62,11 @@
   }
 
   // Main parser: from card text to structured object {date, hasTime, title, pax}
-  function parseCardText(cardText) {
+  function parseCardText(cardTitle) {
     // Regex to capture date, optional time, and the rest.
     var prefixRegex = /^([\d\.]+)\s*(\d{1,2}(?::\d{1,2})?)?\s*(.*)$/;
-    var match = cardText.match(prefixRegex);
-    if (!match) throw new Error('Invalid card format: ' + cardText);
+    var match = cardTitle.match(prefixRegex);
+    if (!match) throw new Error('Invalid card format: ' + cardTitle);
     var rawDate = match[1];
     var rawTime = match[2];
     var rest = match[3];
@@ -74,11 +74,17 @@
     var time = parseTime(rawTime);
     var date = applyTime(baseDate, time);
     var parts = extractTitleAndPax(rest);
+
+	var title = cardTitle;
+	var all = cardTitle;
     return {
-      date: date,
-      hasTime: !!time,
-      title: parts.title || '',
-      pax: parts.pax || null
+		date: date,
+		hasTime: !!time,
+		title: parts.title || '',
+		pax: parts.pax || null,
+		rest: rest,
+		title: title,
+		all: all
     };
   }
 
